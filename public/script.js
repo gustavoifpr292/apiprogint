@@ -1,10 +1,21 @@
-const API_URL = "http://localhost:3000/bd";
+const API_URL = "http://localhost:3000/bd/";
 
 const cards = document.getElementById("cards");
 
+async function excluirPessoa(id) {
+    try {
+        const response = await fetch(API_URL + id, {method: 'DELETE'});
+	const sucesso = await response.json();
+	alert("Removido com sucesso!");
+        document.getElementById(`pessoa${id}`).remove();
+    } catch (error) {
+        console.error("Erro ao carregar", error);
+    }
+}
+
 async function carregarAlunos() {
     try {
-        const response = await fetch(API_URL, {mode: 'no-cors'});
+        const response = await fetch(API_URL);
         const pessoas = await response.json();
         cards.innerHTML = "";
 
@@ -14,11 +25,12 @@ async function carregarAlunos() {
 
             console.log(pessoa);
             card.innerHTML = `
-                <div class="container">
+                <div class="container" id="pessoa${pessoa.id}">
                     <p><strong>Código de Identificação:</strong> ${pessoa.id}</p>
                     <p><strong>Nome:</strong> ${pessoa.nome}</p>
                     <p><strong>Idade:</strong> ${pessoa.idade}</p>
                     <p><strong>Profissão:</strong> ${pessoa.profissao}</p>
+                    <button onClick="excluirPessoa(${pessoa.id})">Excluir</button>
                 </div>
             `;
 
@@ -26,8 +38,6 @@ async function carregarAlunos() {
         })
     } catch (error) {
         console.error("Erro ao carregar", error);
-    } finally {
-        console.log("tem nada pra ver nn porra");
     }
 }
 

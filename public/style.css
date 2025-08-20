@@ -13,3 +13,17 @@
 .container {
   padding: 2px 16px;
 }
+
+button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c0392b;
+}
