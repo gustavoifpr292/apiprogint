@@ -17,6 +17,7 @@ async function carregarAlunos() {
     try {
         const response = await fetch(API_URL);
         const pessoas = await response.json();
+        console.log(pessoas);
         cards.innerHTML = "";
 
         pessoas.forEach(pessoa => {
@@ -26,11 +27,10 @@ async function carregarAlunos() {
             console.log(pessoa);
             card.innerHTML = `
                 <div class="container" id="pessoa${pessoa.id}">
-                    <p><strong>Código de Identificação:</strong> ${pessoa.id}</p>
                     <p><strong>Nome:</strong> ${pessoa.nome}</p>
                     <p><strong>Idade:</strong> ${pessoa.idade}</p>
                     <p><strong>Profissão:</strong> ${pessoa.profissao}</p>
-                    <button onClick="excluirPessoa(${pessoa.id})">Excluir</button>
+                    <button onClick="excluirPessoa('${pessoa.id}')">Excluir</button>
                 </div>
             `;
 
