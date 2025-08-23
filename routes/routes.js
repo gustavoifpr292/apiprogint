@@ -1,10 +1,16 @@
 import { Router } from "express";
-import { getAllDados, deletePessoa } from "../controllers/controller.js";
+import { getAllDados, criarPessoa, deletePessoa, getPessoa, editPessoa } from "../controllers/controller.js";
 
 const rota = Router();
 
 //rota pra retornar os dados
 rota.get('/bd', getAllDados);
+
+rota.post('/bd', criarPessoa);
+
+rota.get('/bd/:id', getPessoa);
+
+rota.put('/bd/:id', editPessoa);
 
 rota.delete('/bd/:id', deletePessoa);
 
