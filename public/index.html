@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Pessoas cadastradas no Banco de Dados</h2>
+    <button class="btn-delete" onclick="logout()">Sair</button>
+    <h2 id="saudacao">Seja bem vindo, </h2>
+    <h2>Pessoas cadastradas no seu Banco de Dados</h2>
     <form id="formCadastro">
         <input type="text" id="nome" placeholder="Nome" required>
+        <input type="text" id="cpf" placeholder="CPF" required>
         <input type="number" id="idade" placeholder="Idade" required>
         <input type="text" id="profissao" placeholder="Profissão" required>
+        <input type="text" id="email" placeholder="Email" required>
         <button type="submit">Cadastrar</button>
     </form>
+    <input type="text" id="busca" class="form-control" placeholder="Buscar usuário por nome...">
     <div id="cards">
         <div class="card">
             <div class="container">
@@ -22,5 +27,5 @@
         </div>
     </div>
 </body>
-<script src="script.js"></script>
+<script src="scriptIndex.js"></script>
 </html>

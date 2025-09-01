@@ -1,5 +1,6 @@
 import express from "express";
 import dataRoutes from "./routes/routes.js";
+import dataRoutesMiddleware from "./routes/routesMiddleware.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 //Rota da API
 app.use('/', dataRoutes);
+app.use('/', dataRoutesMiddleware);
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

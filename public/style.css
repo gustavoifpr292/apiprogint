@@ -66,3 +66,53 @@ form button:hover {
   border-radius: 10px;
   overflow: hidden;
 }
+
+#busca {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px 0 20px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+#busca:focus {
+  border-color: #27ae60;
+  box-shadow: 0 0 6px rgba(39, 174, 96, 0.4);
+}
+
+/* Botão editar - azul */
+.btn-edit {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-edit:hover {
+  background-color: #2980b9;
+}
+
+/* Botão excluir - vermelho */
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}

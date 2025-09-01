@@ -1,20 +1,18 @@
 import { Router } from "express";
-import { getAllDados, criarPessoa, deletePessoa, getPessoa, editPessoa } from "../controllers/controller.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import authMiddleware from "../middleware/middleware.js";
+import { isUser, getAllDados, criarPessoa, deletePessoa, getPessoa, editPessoa } from "../controllers/controller.js";
+import { authMiddleware } from "../middleware/middleware.js";
 
 const rota = Router();
 
 //rota pra retornar os dados
-rota.get('/bd', getAllDados);
+rota.get('/bd', authMiddleware, getAllDados);
 
-rota.post('/bd', criarPessoa);
+rota.post('/bd', authMiddleware, criarPessoa);
 
-rota.get('/bd/:id', getPessoa);
+rota.get('/bd/:id', authMiddleware, getPessoa);
 
-rota.put('/bd/:id', editPessoa);
+rota.put('/bd/:id', authMiddleware, isUser, editPessoa);
 
-rota.delete('/bd/:id', deletePessoa);
+rota.delete('/bd/:id', authMiddleware, isUser, deletePessoa);
 
 export default rota;

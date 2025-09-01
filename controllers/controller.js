@@ -1,23 +1,22 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, getDoc, deleteDoc, doc, addDoc, updateDoc } from "firebase/firestore";
+import db from "../data/firebase.js";
+import { query, collection, getDocs, getDoc, deleteDoc, doc, addDoc, updateDoc, where } from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDXkbFxsYqJOoTqACkVp-JhrV8pDITO5GE",
-  authDomain: "apiprogint.firebaseapp.com",
-  projectId: "apiprogint",
-  storageBucket: "apiprogint.appspot.com",
-  messagingSenderId: "665902347049",
-  appId: "1:665902347049:web:b9c51fb81a5fbdd3903d38"
-};
+export async function isUser(req, res, next) {
+  try {
+    const username = req.user.username;
+    const expectedUsername = req.body.usuario;
+    if (username != expectedUsername) return res.json({message: "Não tem acesso a esse documento"});
+    next();
+  } catch(err) {
+    console.error(err);
+    res.status(500).json({ error: "Ocorreu um erro ao verificar usuário" });
+  }
+}
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Buscar todos os documentos da coleção "pessoas"
 export async function getAllDados(req, res) {
   try {
-    const snapshot = await getDocs(collection(db, "pessoas"));
-
+    const snapshot = await getDocs(query(collection(db, "pessoas"), where("usuario", "==", req.user.username)));
+    
     const pessoas = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
@@ -58,8 +57,10 @@ export async function editPessoa(req, res) {
 
     await updateDoc(doc(db, "pessoas", id), {
       nome: pessoa.nome,
+      cpf: pessoa.cpf,
       idade: pessoa.idade,
-      profissao: pessoa.profissao
+      profissao: pessoa.profissao,
+      email: pessoa.email
     });
     res.status(201).json({ success: true, pessoa });
   } catch(err) {
@@ -70,14 +71,11 @@ export async function editPessoa(req, res) {
 export async function criarPessoa(req, res) {
   try {
     const pessoa = req.body;
+    console.log(pessoa);
 
     if (!pessoa) return res.status(400).json({ error: "Dados inválidos" });
 
-    await addDoc(collection(db, "pessoas"), {
-      nome: pessoa.nome,
-      idade: pessoa.idade,
-      profissao: pessoa.profissao
-    });
+    await addDoc(collection(db, "pessoas"), pessoa);
     res.status(201).json({ success: true, pessoa });
   } catch(err) {
     console.error(err);
