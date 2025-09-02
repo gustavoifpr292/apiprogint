@@ -4,7 +4,8 @@ import { query, collection, getDocs, getDoc, deleteDoc, doc, addDoc, updateDoc, 
 export async function isUser(req, res, next) {
   try {
     const username = req.user.username;
-    const expectedUsername = req.body.usuario;
+    const expectedUsername = req.headers["username"];
+    //console.log(expectedUsername);
     if (username != expectedUsername) return res.json({message: "Não tem acesso a esse documento"});
     next();
   } catch(err) {

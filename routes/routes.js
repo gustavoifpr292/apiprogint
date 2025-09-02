@@ -9,7 +9,7 @@ rota.get('/bd', authMiddleware, getAllDados);
 
 rota.post('/bd', authMiddleware, criarPessoa);
 
-rota.get('/bd/:id', authMiddleware, getPessoa);
+rota.get('/bd/:id', authMiddleware, isUser, getPessoa);
 
 rota.put('/bd/:id', authMiddleware, isUser, editPessoa);
 

@@ -59,7 +59,7 @@ export async function logarUsuario(req, res) {
         return res.status(400).json({message: "Senha incorreta"});
     }
 
-    const token = jwt.sign({username}, "martielo", {expiresIn:"1h"});
+    const token = jwt.sign({username}, "martielo", {expiresIn:"5m"});
     res.json({token});
   } catch(err) {
     res.status(500).json({message:"Erro ao logar usuario"});

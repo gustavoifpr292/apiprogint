@@ -1,31 +1,30 @@
 const API_URL = "http://localhost:3000/bd/";
 
 const token = localStorage.getItem("token");
-if (!token) {
-  window.location.href = "login.html";
-}
-
-let username = "";
-
-async function getUsername() {
+let user = null;
+async function getUser() {
   try {
     const response = await fetch("http://localhost:3000/profile", {
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
     });
 
     if (!response.ok) {
-        throw new Error("Sumiu");
+        alert("Sua token expirou ou é inválida");
+        logout();
+        throw new Error("o relogio gira");
     }
     const data = await response.json();
-    username = data.username;
+    user = data;
     const saudacao = document.getElementById("saudacao");
-    saudacao.innerHTML += `${username}!`;
+    saudacao.innerHTML += `${user.username}!`;
+    //console.log(user);
   } catch (err) {
     console.error(err);
   }
 }
 
-getUsername();
+getUser();
+
 const form = document.getElementById("formCadastro");
 const cards = document.getElementById("cards");
 const buscaInput = document.getElementById("busca");
@@ -39,7 +38,7 @@ async function cadastrarPessoa(e) {
         idade: document.getElementById("idade").value,
         profissao: document.getElementById("profissao").value,
         email: document.getElementById("email").value,
-        usuario: username
+        usuario: user.username
     }
    
     //console.log(pessoa);
@@ -56,7 +55,7 @@ async function cadastrarPessoa(e) {
     try {
         const response = await fetch(url, {
             method,
-            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`, "Username": user.username},
             body: JSON.stringify(pessoa)
         });
 
@@ -71,15 +70,16 @@ async function cadastrarPessoa(e) {
     }    
 }
 
-async function editarPessoa(id) {
-    editId = id;
+async function editarPessoa(id, usuario) {
     try {
         const response = await fetch(API_URL + id, {
             method: 'GET',
-            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`, "Username": usuario},
         });
         const pessoa = await response.json();
-        if (!pessoa) throw new Error("Pessoa não existe");
+        console.log(pessoa);
+        if (!pessoa) throw new Error("Pessoa não existe ou você não tem acesso");
+        editId = id;
         
         document.getElementById("nome").value = pessoa.nome;
         document.getElementById("cpf").value = pessoa.cpf;
@@ -95,8 +95,7 @@ async function excluirPessoa(id, usuario) {
     try {
         const response = await fetch(API_URL + id, {
           method: 'DELETE',
-          headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
-          body: JSON.stringify({usuario})
+          headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`, "Username": usuario}
         });
 	const sucesso = await response.json();
 	alert("Removido com sucesso!");
@@ -131,7 +130,7 @@ async function carregarPessoas(filtro = "") {
                     <p><strong>Idade:</strong> ${pessoa.idade}</p>
                     <p><strong>Profissão:</strong> ${pessoa.profissao}</p>
                     <p><strong>Email:</strong> ${pessoa.email}</p>
-                    <button class="btn-edit" onClick="editarPessoa('${pessoa.id}')">Editar</button>
+                    <button class="btn-edit" onClick="editarPessoa('${pessoa.id}', '${pessoa.usuario}')">Editar</button>
                     <button class="btn-delete" onClick="excluirPessoa('${pessoa.id}', '${pessoa.usuario}')">Excluir</button>
                 </div>
             `;
